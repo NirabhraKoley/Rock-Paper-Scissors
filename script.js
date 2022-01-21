@@ -86,19 +86,24 @@ function resetBtn() {
   computerScore_span.innerHTML = computerScore;
   result_p.innerHTML = `Paper covers rock. You win!`;
   same = 0;
+  round[0] = 0;
+  firstRound.innerHTML = round[0];
+  round[1] = 0;
+  SecRound.innerHTML = round[1];
+  round[2] = 0;
+  ThirdRound.innerHTML = round[2];
+  winner_p.innerHTML = `USER/COMP`;
+  pointer = 0;
+  whoWin.innerHTML = `NULL`;
 }
-function winnerGame()
-{
+function winnerGame() {
   round.sort();
   var mf = 1;
   var m = 0;
   var item;
-  for (var i = 0; i < round.length; i++) 
-  {
-    for (var j = i; j < round.length; j++) 
-    {
-      if (round[i] == round[j]) 
-      m++;
+  for (var i = 0; i < round.length; i++) {
+    for (var j = i; j < round.length; j++) {
+      if (round[i] == round[j]) m++;
       if (mf < m) {
         mf = m;
         item = round[i];
@@ -111,7 +116,14 @@ function winnerGame()
 }
 function nextBtn() {
   round[pointer] = winner(userScore, computerScore);
-  resetBtn();
+  userScore = 0;
+  computerScore = 0;
+  move = 5;
+  move_left.innerHTML = 5;
+  userScore_span.innerHTML = userScore;
+  computerScore_span.innerHTML = computerScore;
+  result_p.innerHTML = `Paper covers rock. You win!`;
+  same = 0;
   if (pointer == 0) {
     firstRound.innerHTML = round[pointer];
   } else if (pointer == 1) {
