@@ -1,6 +1,10 @@
 var userScore = 0;
 var computerScore = 0;
-var move = 4;
+var move = 5;
+var pointer = 0;
+var round = [];
+var same = 0;
+var max = 0;
 const userScore_span = document.getElementById("user-score");
 const computerScore_span = document.getElementById("comp-score");
 const scoreBoard_div = document.getElementById(".score-board");
@@ -11,6 +15,11 @@ const scissors_div = document.getElementById("s");
 const reset = document.getElementById("reset-btn");
 const move_left = document.getElementById("left");
 const whoWin = document.querySelector(".who-win");
+const next = document.getElementById("next-btn");
+var firstRound = document.querySelector(".round-result-1");
+var SecRound = document.querySelector(".round-result-2");
+var ThirdRound = document.querySelector(".round-result-3");
+var winner_p = document.querySelector(".winner-result_p");
 
 function getComputerChoice() {
   const choices = ["r", "p", "s"];
@@ -29,6 +38,7 @@ function convertToWord(letter) {
 }
 function win(userChoice, computerChoice) {
   userScore++;
+  move--;
   userScore_span.innerHTML = userScore;
   computerScore_span.innerHTML = computerScore;
   const smallUserWord = "user".fontsize(3).sub();
@@ -43,6 +53,7 @@ function win(userChoice, computerChoice) {
 
 function lose(userChoice, computerChoice) {
   computerScore++;
+  move--;
   computerScore_span.innerHTML = computerScore;
   userScore_span.innerHTML = userScore;
   const smallUserWord = "user".fontsize(3).sub();
@@ -69,12 +80,55 @@ function draw(userChoice, computerChoice) {
 function resetBtn() {
   userScore = 0;
   computerScore = 0;
+  move = 5;
+  move_left.innerHTML = 5;
   userScore_span.innerHTML = userScore;
   computerScore_span.innerHTML = computerScore;
   result_p.innerHTML = `Paper covers rock. You win!`;
+  same = 0;
+}
+function winnerGame()
+{
+  round.sort();
+  var mf = 1;
+  var m = 0;
+  var item;
+  for (var i = 0; i < round.length; i++) 
+  {
+    for (var j = i; j < round.length; j++) 
+    {
+      if (round[i] == round[j]) 
+      m++;
+      if (mf < m) {
+        mf = m;
+        item = round[i];
+      }
+    }
+    m = 0;
+  }
+  winner_p.innerHTML = item;
+  same++;
+}
+function nextBtn() {
+  round[pointer] = winner(userScore, computerScore);
+  resetBtn();
+  if (pointer == 0) {
+    firstRound.innerHTML = round[pointer];
+  } else if (pointer == 1) {
+    SecRound.innerHTML = round[pointer];
+    if (round[0] == round[1]) {
+      winner_p.innerHTML = round[0];
+      same++;
+    }
+  } else {
+    ThirdRound.innerHTML = round[pointer];
+    winnerGame();
+  }
+  pointer++;
 }
 function game(userChoice) {
   const computerChoice = getComputerChoice();
+
   switch (userChoice + computerChoice) {
     case "rs":
     case "pr":
@@ -96,6 +150,10 @@ function game(userChoice) {
 reset.addEventListener("click", function () {
   resetBtn("reset-btn");
 });
+
+next.addEventListener("click", function () {
+  nextBtn("next-btn");
+});
 function winner(userScore, computerScore) {
   if (userScore > computerScore) {
     return `User`;
@@ -107,26 +165,34 @@ function winner(userScore, computerScore) {
   }
 }
 function update() {
-  move--;
-  if (move < 0) {
-    move = 5;
+  if (move == 0) {
     whoWin.innerHTML = winner(userScore, computerScore);
-    userScore = 0;
-    computerScore = 0;
   }
 }
 function main() {
   rock_div.addEventListener("click", function () {
-    game("r");
-    update();
+    if (move > 0) {
+      if (same == 0) {
+        game("r");
+        update();
+      }
+    }
   });
   paper_div.addEventListener("click", function () {
-    game("p");
-    update();
+    if (move > 0) {
+      if (same == 0) {
+        game("p");
+        update();
+      }
+    }
   });
   scissors_div.addEventListener("click", function () {
-    game("s");
-    update();
+    if (move > 0) {
+      if (same == 0) {
+        game("s");
+        update();
+      }
+    }
   });
 }
 main();
