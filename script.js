@@ -41,13 +41,7 @@ function win(userChoice, computerChoice) {
   move--;
   userScore_span.innerHTML = userScore;
   computerScore_span.innerHTML = computerScore;
-  const smallUserWord = "user".fontsize(3).sub();
-  const smallCompWord = "comp".fontsize(3).sub();
-  result_p.innerHTML = `${convertToWord(
-    userChoice
-  )} ${smallUserWord} beats ${convertToWord(
-    computerChoice
-  )} ${smallCompWord} .You WIN!`;
+  result_p.innerHTML = `${convertToWord(userChoice)} (User) beats ${convertToWord(computerChoice)} (Comp) .You WIN!`;
   left.innerHTML = move;
 }
 
@@ -56,25 +50,13 @@ function lose(userChoice, computerChoice) {
   move--;
   computerScore_span.innerHTML = computerScore;
   userScore_span.innerHTML = userScore;
-  const smallUserWord = "user".fontsize(3).sub();
-  const smallCompWord = "comp".fontsize(3).sub();
-  result_p.innerHTML = `${convertToWord(
-    computerChoice
-  )} ${smallCompWord} beats ${convertToWord(
-    userChoice
-  )} ${smallUserWord} .You LOSE!`;
+  result_p.innerHTML = `${convertToWord(computerChoice)} (Comp) beats ${convertToWord(userChoice)} (User) .You LOSE!`;
   left.innerHTML = move;
 }
 function draw(userChoice, computerChoice) {
   computerScore_span.innerHTML = computerScore;
   userScore_span.innerHTML = userScore;
-  const smallUserWord = "user".fontsize(3).sub();
-  const smallCompWord = "comp".fontsize(3).sub();
-  result_p.innerHTML = `${convertToWord(
-    userChoice
-  )} ${smallUserWord} equal ${convertToWord(
-    computerChoice
-  )} ${smallCompWord} .Its a DRAW!`;
+  result_p.innerHTML = `${convertToWord(userChoice)} (User) equal ${convertToWord(computerChoice)} (Comp) .Its a DRAW!`;
   left.innerHTML = move;
 }
 function resetBtn() {
@@ -138,6 +120,7 @@ function nextBtn() {
   }
   pointer++;
 }
+
 function game(userChoice) {
   const computerChoice = getComputerChoice();
 
@@ -164,7 +147,11 @@ reset.addEventListener("click", function () {
 });
 
 next.addEventListener("click", function () {
-  nextBtn("next-btn");
+  if (move == 0) {
+    nextBtn("next-btn");
+  } else {
+    alert("Complete The Round");
+  }
 });
 function winner(userScore, computerScore) {
   if (userScore > computerScore) {
